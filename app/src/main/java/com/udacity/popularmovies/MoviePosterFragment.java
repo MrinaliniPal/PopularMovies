@@ -1,11 +1,14 @@
 package com.udacity.popularmovies;
 
-import android.content.Context;
-import android.net.Uri;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,7 +37,6 @@ public class MoviePosterFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_poster,container,false);
@@ -55,17 +57,16 @@ public class MoviePosterFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray movieDetail = response.getJSONArray("results");
+                    final JSONArray movieDetail = response.getJSONArray("results");
                     moviePosters = new String[movieDetail.length()];
                     final String[] movieID = new String[movieDetail.length()];
                     final String[] title = new String[movieDetail.length()];
 
-                    for(int i=0;i<movieDetail.length();i++)
-                    {
-                        movieID[i]=movieDetail.getJSONObject(i).getString("id");
-                        title[i]=movieDetail.getJSONObject(i).getString("title");
-                        moviePosters[i]=Utils.BASE_PICTURE_URL+Utils.PICTURE_SIZE1+movieDetail.getJSONObject(i).getString("poster_path");
-
+                    for(int i=0;i<movieDetail.length();i++) {
+                        movieID[i] = movieDetail.getJSONObject(i).getString("id");
+                        title[i] = movieDetail.getJSONObject(i).getString("title");
+                        moviePosters[i] = Utils.BASE_PICTURE_URL + Utils.PICTURE_SIZE1 + movieDetail.getJSONObject(i).getString("poster_path");
+                    }
                         MovieListImplement adapter = new MovieListImplement(getActivity(),moviePosters);
                         gridView.setAdapter(adapter);
                         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,11 +74,30 @@ public class MoviePosterFragment extends Fragment {
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 if(MainActivity.isSinglePane)
                                 {
-
+                                    Detail detail = new Detail();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("movieID",movieID[position]);
+                                    bundle.putString("movieType",parturl);
+                                    detail.setArguments(bundle);
+                                    FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
+                                    fragmentTransaction.replace(R.id.phone_container ,detail);
+                                    fragmentTransaction.isAddToBackStackAllowed();
+                                    fragmentTransaction.addToBackStack("movieDetail");
+                                    fragmentTransaction.commit();
+                                }
+                                else
+                                {
+                                    Detail detail = new Detail();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("movieID",movieID[position]);
+                                    bundle.putString("movieType",parturl);
+                                    detail.setArguments(bundle);
+                                    android.app.FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
+                                    //fragmentTransaction.replace(R.id.detail_fragment, detail);
+                                    fragmentTransaction.commit();
                                 }
                             }
                         });
-                    }
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
@@ -90,5 +110,30 @@ public class MoviePosterFragment extends Fragment {
                 Toast.makeText(getActivity(), "Internet not working", Toast.LENGTH_SHORT).show();
             }
     });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.Popular) {
+            movieDetailReceive("popular");
+            return true;
+        }
+        else if (id == R.id.TopRated) {
+            movieDetailReceive("top_rated");
+            return true;
+        } /*else if (id == R.id.Favourite)
+            startActivity(new Intent(getActivity(), Favourite.class));*/
+            return super.onOptionsItemSelected(item);
     }
 }
