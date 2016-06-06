@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,26 @@ public class Detail extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //mFavorited=isFavourite();
+        final FloatingActionButton fab=(FloatingActionButton)view.findViewById(R.id.fab);
+        /*fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fab.setImageResource(toggleFavoriteButton());
+            }
+        });*/
+        if(mFavorited){
+            fab.setImageResource(R.drawable.ic_favorite_selected);
+        }
+        else{
+            fab.setImageResource(R.drawable.ic_favorite_not_selected);
+        }
+
     }
 
 
