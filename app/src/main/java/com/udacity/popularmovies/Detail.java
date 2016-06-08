@@ -1,13 +1,13 @@
 package com.udacity.popularmovies;
 
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

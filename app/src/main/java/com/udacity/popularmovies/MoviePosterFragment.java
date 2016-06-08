@@ -78,26 +78,26 @@ public class MoviePosterFragment extends Fragment {
                         public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                             if(MainActivity.isSinglePane)
                             {
-                                Detail myDetailFragment = new Detail();
+                                Detail detail = new Detail();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("movieID",movieID[position]);
                                 bundle.putString("movieType",parturl);
-                                myDetailFragment.setArguments(bundle);
+                                detail.setArguments(bundle);
                                 FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.phone_container,myDetailFragment);
+                                fragmentTransaction.replace(R.id.phone_container,detail);
                                 fragmentTransaction.isAddToBackStackAllowed();
                                 fragmentTransaction.addToBackStack("movieDetail");
                                 fragmentTransaction.commit();
                             }
                             else
                             {
-                                Detail myDetailFragment = new Detail();
+                                Detail detail = new Detail();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("movieID",movieID[position]);
                                 bundle.putString("movieType",parturl);
-                                myDetailFragment.setArguments(bundle);
+                                detail.setArguments(bundle);
                                 FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.detail_fragment, myDetailFragment);
+                                fragmentTransaction.replace(R.id.detail_fragment, detail);
                                 fragmentTransaction.commit();
                             }
                         }
