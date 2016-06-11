@@ -30,7 +30,7 @@ public class MovieListImplement extends ArrayAdapter<String> {
         LayoutInflater inflater = activity.getLayoutInflater();
         final View rowView = inflater.inflate(R.layout.single_poster,null,true);
 
-        ImageView imageView = (ImageView)view.findViewById(R.id.singlePoster);
+        ImageView imageView = (ImageView)rowView.findViewById(R.id.singlePoster);
         Picasso.with(activity).load(moviePoster[i]).into(imageView);
 
         return rowView;

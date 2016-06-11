@@ -143,8 +143,8 @@ public class MoviePosterFragment extends Fragment {
         else if (id == R.id.TopRated) {
             MovieDetailReceive("top_rated");
             return true;
-        } /*else if (id == R.id.Favourite)
-            startActivity(new Intent(getActivity(), Favourite.class));*/
+        } else if (id == R.id.Favourite)
+            startActivity(new Intent(getActivity(), Favourite.class));
         return super.onOptionsItemSelected(item);
     }
 }
